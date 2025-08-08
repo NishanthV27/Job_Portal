@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Employer Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="fw-bold mb-4">Employer Dashboard</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Active Jobs</h5>
+                    <p class="display-6">{{ jobs|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Applications</h5>
+                    <p class="display-6">{{ applications|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">New Applications</h5>
+                    <p class="display-6">{{ applications|selectattr('status', 'equalto', 'pending')|list|length }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white d-flex justify-content-between align-items-center">
+                    <h5 class="mb-0">Your Job Listings</h5>
+                    <a href="{{ url_for('post_job') }}" class="btn btn-sm btn-primary">Post New Job</a>
+                </div>
+                <div class="card-body">
+                    {% if jobs %}
+                    <div class="list-group">
+                        {% for job in jobs[-3:] %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mb-1">{{ job['title'] }}</h6>
+                                <small>{{ job['posted_at'][:10] }}</small>
+                            </div>
+                            <p class="mb-1 small">{{ job['description'][:100] }}...</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <small class="text-muted">{{ job['location'] }}</small>
+                                <a href="{{ url_for('manage_jobs') }}" class="btn btn-sm btn-outline-secondary">Manage</a>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="{{ url_for('manage_jobs') }}" class="btn btn-sm btn-outline-primary mt-3">View All Jobs</a>
+                    {% else %}
+                    <div class="alert alert-info">
+                        You haven't posted any jobs yet. <a href="{{ url_for('post_job') }}">Post your first job</a> to get started.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Applications</h5>
+                </div>
+                <div class="card-body">
+                    {% if applications %}
+                    <div class="list-group">
+                        {% for app in applications[-3:] %}
+                        <div class="list-group-item">
+                            <div class="d-flex justify-content-between">
+                                <h6 class="mb-1">{{ app['title'] }}</h6>
+                                <span class="badge bg-{{ 'warning' if app['status'] == 'pending' else 'success' if app['status'] == 'accepted' else 'danger' }}">{{ app['status'] }}</span>
+                            </div>
+                            <p class="mb-1 small">Applicant: {{ app['full_name'] }}</p>
+                            <small class="text-muted">Applied: {{ app['applied_at'][:10] }}</small>
+                        </div>
+                        {% endfor %}
+                    </div>
+                    <a href="#" class="btn btn-sm btn-outline-primary mt-3">View All Applications</a>
+                    {% else %}
+                    <div class="alert alert-info">
+                        No applications received yet.
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

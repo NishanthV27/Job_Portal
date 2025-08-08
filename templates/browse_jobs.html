@@ -1,0 +1,80 @@
+{% extends "base.html" %}
+
+{% block title %}Browse Jobs{% endblock %}
+
+{% block content %}
+<div class="d-flex justify-content-between align-items-center mb-4">
+    <h2 class="fw-bold">
+        {% if search_query %}
+        Search Results for "{{ search_query }}"
+        {% else %}
+        All Job Listings
+        {% endif %}
+    </h2>
+    {% if 'user_id' in session and session['user_type'] == 'employer' %}
+    <a href="{{ url_for('post_job') }}" class="btn btn-primary">Post a Job</a>
+    {% endif %}
+</div>
+
+<div class="row">
+    <div class="col-md-4 mb-4">
+        <div class="card shadow-sm">
+            <div class="card-body">
+                <h5 class="card-title">Filters</h5>
+                <form method="get" action="{{ url_for('search') }}">
+                    <div class="mb-3">
+                        <label for="q" class="form-label">Keywords</label>
+                        <input type="text" class="form-control" id="q" name="q" value="{{ search_query or '' }}">
+                    </div>
+                    <div class="mb-3">
+                        <label for="location" class="form-label">Location</label>
+                        <input type="text" class="form-control" id="location" name="location">
+                    </div>
+                    <button type="submit" class="btn btn-primary w-100">Apply Filters</button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-8">
+        {% if jobs %}
+        <div class="list-group">
+            {% for job in jobs %}
+            <div class="list-group-item mb-3 shadow-sm rounded">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <h5 class="mb-1">{{ job['title'] }}</h5>
+                        <p class="mb-1"><strong>{{ job['company'] }}</strong> - <small class="text-muted">{{ job['location'] }}</small></p>
+                    </div>
+                    <div class="text-end">
+                        {% if job['salary'] %}
+                        <p class="mb-1 text-primary fw-bold">{{ job['salary'] }}</p>
+                        {% endif %}
+                        <small class="text-muted">Posted: {{ job['posted_at'][:10] }}</small>
+                    </div>
+                </div>
+                <p class="mt-2 mb-2">{{ job['description'][:200] }}...</p>
+                <div class="d-flex justify-content-between align-items-center">
+                    <small class="text-muted">Applications: {{ job.get('application_count', 0) }}</small>
+                    <div>
+                        {% if 'user_id' in session %}
+                            {% if session['user_type'] == 'seeker' %}
+                                <a href="{{ url_for('apply_job', job_id=job['id']) }}" class="btn btn-sm btn-primary">Apply Now</a>
+                            {% elif session['user_type'] == 'employer' and session['user_id'] == job['employer_id'] %}
+                                <a href="{{ url_for('manage_jobs') }}" class="btn btn-sm btn-outline-secondary">Manage</a>
+                            {% endif %}
+                        {% else %}
+                            <a href="{{ url_for('login') }}" class="btn btn-sm btn-outline-primary">Login to Apply</a>
+                        {% endif %}
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="alert alert-info">
+            No jobs found matching your criteria. Try different search terms.
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %} 

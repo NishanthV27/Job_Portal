@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block title %}Admin Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="fw-bold mb-4">Admin Dashboard</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Users</h5>
+                    <p class="display-6">{{ users|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Jobs</h5>
+                    <p class="display-6">{{ jobs|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Total Applications</h5>
+                    <p class="display-6">{{ applications|length }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Users</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Username</th>
+                                    <th>Type</th>
+                                    <th>Joined</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for user in users[-5:] %}
+                                <tr>
+                                    <td>{{ user['username'] }}</td>
+                                    <td><span class="badge bg-{{ 'primary' if user['user_type'] == 'admin' else 'success' if user['user_type'] == 'employer' else 'info' }}">{{ user['user_type'] }}</span></td>
+                                    <td>{{ user['created_at'][:10] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All Users</a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="col-md-6 mb-4">
+            <div class="card shadow-sm">
+                <div class="card-header bg-white">
+                    <h5 class="mb-0">Recent Jobs</h5>
+                </div>
+                <div class="card-body">
+                    <div class="table-responsive">
+                        <table class="table">
+                            <thead>
+                                <tr>
+                                    <th>Title</th>
+                                    <th>Company</th>
+                                    <th>Posted</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                {% for job in jobs[-5:] %}
+                                <tr>
+                                    <td>{{ job['title'] }}</td>
+                                    <td>{{ job['company'] }}</td>
+                                    <td>{{ job['posted_at'][:10] }}</td>
+                                </tr>
+                                {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                    <a href="#" class="btn btn-sm btn-outline-primary">View All Jobs</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %} 

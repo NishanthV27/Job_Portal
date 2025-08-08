@@ -1,0 +1,233 @@
+/* Modern Color Palette */
+:root {
+  --primary: #4361ee;
+  --primary-light: #e6ebff;
+  --secondary: #3f37c9;
+  --dark: #212529;
+  --light: #f8f9fa;
+  --success: #4cc9f0;
+  --danger: #f72585;
+  --warning: #f8961e;
+  --info: #4895ef;
+}
+
+/* Base Styles */
+body {
+  font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+  line-height: 1.6;
+  color: var(--dark);
+  background-color: #f5f7fa;
+}
+
+/* Navbar Enhancements */
+.navbar {
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+  padding: 0.75rem 0;
+}
+
+.navbar-brand {
+  font-weight: 700;
+  font-size: 1.5rem;
+  background: linear-gradient(to right, var(--primary), var(--secondary));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.nav-link {
+  font-weight: 500;
+  padding: 0.5rem 1rem;
+  border-radius: 0.5rem;
+  transition: all 0.3s ease;
+}
+
+.nav-link:hover {
+  background-color: var(--primary-light);
+  color: var(--primary);
+}
+
+/* Hero Section */
+.hero-section {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+  border-radius: 0 0 1rem 1rem;
+  overflow: hidden;
+  position: relative;
+}
+
+.hero-section::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 40%;
+  height: 100%;
+  background: url('../images/hero-pattern.svg') no-repeat;
+  background-size: cover;
+  opacity: 0.1;
+}
+
+/* Cards */
+.card {
+  border: none;
+  border-radius: 0.75rem;
+  overflow: hidden;
+  transition: all 0.3s cubic-bezier(0.25, 0.8, 0.25, 1);
+  margin-bottom: 1.5rem;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 10px 20px rgba(67, 97, 238, 0.15);
+}
+
+.card-header {
+  background-color: white;
+  border-bottom: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+/* Buttons */
+.btn {
+  border-radius: 0.5rem;
+  padding: 0.5rem 1.25rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+}
+
+.btn-primary {
+  background-color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-primary:hover {
+  background-color: var(--secondary);
+  border-color: var(--secondary);
+  transform: translateY(-2px);
+}
+
+.btn-outline-primary {
+  color: var(--primary);
+  border-color: var(--primary);
+}
+
+.btn-outline-primary:hover {
+  background-color: var(--primary);
+  color: white;
+}
+
+/* Forms */
+.form-control {
+  border-radius: 0.5rem;
+  padding: 0.75rem 1rem;
+  border: 1px solid #e0e0e0;
+  transition: all 0.3s ease;
+}
+
+.form-control:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 0.25rem rgba(67, 97, 238, 0.25);
+}
+
+/* Badges */
+.badge {
+  font-weight: 500;
+  padding: 0.35em 0.65em;
+  border-radius: 0.5rem;
+}
+
+/* Animations */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(20px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade {
+  animation: fadeIn 0.6s ease-out forwards;
+}
+
+/* Dashboard Cards */
+.dashboard-card {
+  border-left: 4px solid var(--primary);
+  transition: all 0.3s ease;
+}
+
+.dashboard-card:hover {
+  transform: translateY(-3px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+  .hero-section {
+    text-align: center;
+    padding: 3rem 1rem;
+  }
+  
+  .hero-section::before {
+    display: none;
+  }
+}
+
+/* Utility Classes */
+.hover-shadow {
+  transition: box-shadow 0.3s ease;
+}
+
+.hover-shadow:hover {
+  box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+}
+
+.transition-all {
+  transition: all 0.3s ease;
+}
+
+.bg-gradient-primary {
+  background: linear-gradient(135deg, var(--primary), var(--secondary));
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--primary);
+  border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--secondary);
+}
+
+/* Fix search form alignment */
+.search-form {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.search-form .input-group {
+  flex: 1;
+}
+
+.search-form .btn-search {
+  height: 100%;
+  white-space: nowrap;
+}
+
+/* Input group fixes */
+.input-group-text {
+  background-color: white;
+  border-right: none;
+}
+
+.form-control.search-input {
+  border-left: none;
+  padding-left: 0;
+}
+
+.form-control.search-input:focus {
+  box-shadow: none;
+}

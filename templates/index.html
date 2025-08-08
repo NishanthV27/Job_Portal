@@ -1,0 +1,139 @@
+{% extends "base.html" %}
+
+{% block title %}Home{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="hero-section bg-primary text-white py-5">
+    <div class="container">
+        <div class="row align-items-center">
+            <div class="col-lg-6">
+                <h1 class="display-4 fw-bold mb-4">Find Your Dream Job Today</h1>
+                <p class="lead mb-4">Join thousands of employers and job seekers who are already using our platform to connect and grow.</p>
+                <div class="d-flex gap-3">
+                    <a href="{{ url_for('browse_jobs') }}" class="btn btn-light btn-lg px-4">Browse Jobs</a>
+                    {% if 'user_id' not in session %}
+                        <a href="{{ url_for('signup') }}" class="btn btn-outline-light btn-lg px-4">Sign Up</a>
+                    {% endif %}
+                </div>
+            </div>
+            <div class="col-lg-6 d-none d-lg-block">
+                <!-- Using Placeholder.com alternative -->
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Search Section -->
+<section class="search-section py-4 bg-light">
+    <div class="container">
+        <div class="card shadow-sm">
+            <div class="card-body p-4">
+                <form action="{{ url_for('search') }}" method="get">
+                    <div class="row g-3">
+                        <div class="col-md-8">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-search"></i></span>
+                                <input type="text" name="q" class="form-control form-control-lg" placeholder="Job title, keywords, or company">
+                            </div>
+                        </div>
+                        <div class="col-md-3">
+                            <div class="input-group">
+                                <span class="input-group-text bg-white"><i class="fas fa-map-marker-alt"></i></span>
+                                <input type="text" name="location" class="form-control form-control-lg" placeholder="Location">
+                            </div>
+                        </div>
+                        <div class="col-md-2 col-12 d-grid">
+    <button type="submit" class="btn btn-primary h-100">Search</button>
+  </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Featured Jobs -->
+<section class="py-5">
+    <div class="container">
+        <div class="d-flex justify-content-between align-items-center mb-4">
+            <h2 class="fw-bold">Featured Jobs</h2>
+            <a href="{{ url_for('browse_jobs') }}" class="btn btn-outline-primary">View All Jobs</a>
+        </div>
+        
+        <div class="row g-4">
+            {% for job in jobs %}
+            <div class="col-md-6 col-lg-4">
+                <div class="card h-100 shadow-sm">
+                    <div class="card-body">
+                        <div class="d-flex justify-content-between mb-2">
+                            <span class="badge bg-primary">{{ job['company'] }}</span>
+                            <span class="text-muted">{{ job['posted_at'][:10] }}</span>
+                        </div>
+                        <h5 class="card-title">{{ job['title'] }}</h5>
+                        <p class="card-text text-muted">{{ job['description'][:100] }}...</p>
+                        <div class="d-flex justify-content-between align-items-center">
+                            <span><i class="fas fa-map-marker-alt me-1"></i> {{ job['location'] }}</span>
+                            {% if job['salary'] %}
+                            <span class="fw-bold text-primary">{{ job['salary'] }}</span>
+                            {% endif %}
+                        </div>
+                    </div>
+                    <div class="card-footer bg-white">
+                        <a href="{{ url_for('browse_jobs') }}" class="btn btn-outline-primary w-100">View Details</a>
+                    </div>
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section class="py-5 bg-light">
+    <div class="container">
+        <h2 class="text-center fw-bold mb-5">How It Works</h2>
+        <div class="row g-4">
+            <div class="col-md-4 text-center">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <div class="icon-box bg-primary text-white mx-auto mb-4">
+                        <i class="fas fa-user-tie fa-2x"></i>
+                    </div>
+                    <h4>For Employers</h4>
+                    <ol class="text-start ps-4 mt-3">
+                        <li class="mb-2">Create an employer account</li>
+                        <li class="mb-2">Post your job openings</li>
+                        <li>Manage applications</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <div class="icon-box bg-primary text-white mx-auto mb-4">
+                        <i class="fas fa-search fa-2x"></i>
+                    </div>
+                    <h4>For Job Seekers</h4>
+                    <ol class="text-start ps-4 mt-3">
+                        <li class="mb-2">Create a job seeker profile</li>
+                        <li class="mb-2">Browse and search for jobs</li>
+                        <li>Apply with one click</li>
+                    </ol>
+                </div>
+            </div>
+            <div class="col-md-4 text-center">
+                <div class="p-4 bg-white rounded shadow-sm h-100">
+                    <div class="icon-box bg-primary text-white mx-auto mb-4">
+                        <i class="fas fa-handshake fa-2x"></i>
+                    </div>
+                    <h4>Get Connected</h4>
+                    <ol class="text-start ps-4 mt-3">
+                        <li class="mb-2">Employers review applications</li>
+                        <li class="mb-2">Schedule interviews</li>
+                        <li>Find your perfect match</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+{% endblock %}

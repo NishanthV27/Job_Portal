@@ -1,0 +1,74 @@
+{% extends "base.html" %}
+
+{% block title %}Sign Up{% endblock %}
+
+{% block content %}
+<div class="row justify-content-center">
+    <div class="col-md-8 col-lg-6">
+        <div class="card shadow-sm">
+            <div class="card-body p-5">
+                <h2 class="card-title text-center mb-4">Create Your Account</h2>
+                <form method="POST" action="{{ url_for('signup') }}">
+                    <div class="row g-3">
+                        <div class="col-md-6">
+                            <label for="username" class="form-label">Username</label>
+                            <input type="text" class="form-control" id="username" name="username" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="email" class="form-label">Email</label>
+                            <input type="email" class="form-control" id="email" name="email" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="password" class="form-label">Password</label>
+                            <input type="password" class="form-control" id="password" name="password" required>
+                        </div>
+                        <div class="col-md-6">
+                            <label for="user_type" class="form-label">I am a</label>
+                            <select class="form-select" id="user_type" name="user_type" required>
+                                <option value="">Select...</option>
+                                <option value="employer">Employer</option>
+                                <option value="seeker">Job Seeker</option>
+                            </select>
+                        </div>
+                        <div class="col-12" id="fullNameField">
+                            <label for="full_name" class="form-label">Full Name</label>
+                            <input type="text" class="form-control" id="full_name" name="full_name">
+                        </div>
+                        <div class="col-12 d-none" id="companyField">
+                            <label for="company_name" class="form-label">Company Name</label>
+                            <input type="text" class="form-control" id="company_name" name="company_name">
+                        </div>
+                        <div class="col-12 mt-3">
+                            <button type="submit" class="btn btn-primary w-100 py-2">Sign Up</button>
+                        </div>
+                    </div>
+                </form>
+                <div class="text-center mt-4">
+                    <p class="mb-0">Already have an account? <a href="{{ url_for('login') }}">Login</a></p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+{% block scripts %}
+<script>
+document.getElementById('user_type').addEventListener('change', function() {
+    const userType = this.value;
+    const companyField = document.getElementById('companyField');
+    const fullNameField = document.getElementById('fullNameField');
+    
+    if (userType === 'employer') {
+        companyField.classList.remove('d-none');
+        fullNameField.classList.add('d-none');
+    } else if (userType === 'seeker') {
+        companyField.classList.add('d-none');
+        fullNameField.classList.remove('d-none');
+    } else {
+        companyField.classList.add('d-none');
+        fullNameField.classList.add('d-none');
+    }
+});
+</script>
+{% endblock %}
+{% endblock %}

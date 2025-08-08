@@ -1,0 +1,111 @@
+{% extends "base.html" %}
+
+{% block title %}Job Seeker Dashboard{% endblock %}
+
+{% block content %}
+<div class="container-fluid">
+    <h1 class="fw-bold mb-4">Welcome, {{ session['username'] }}</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-4">
+            <div class="card bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Applications Sent</h5>
+                    <p class="display-6">{{ applications|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Accepted</h5>
+                    <p class="display-6">{{ applications|selectattr('status', 'equalto', 'accepted')|list|length }}</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Pending</h5>
+                    <p class="display-6">{{ applications|selectattr('status', 'equalto', 'pending')|list|length }}</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="card shadow-sm mb-4">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Your Recent Applications</h5>
+        </div>
+        <div class="card-body">
+            {% if applications %}
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Job Title</th>
+                            <th>Company</th>
+                            <th>Location</th>
+                            <th>Status</th>
+                            <th>Applied On</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for app in applications[-5:] %}
+                        <tr>
+                            <td>{{ app['title'] }}</td>
+                            <td>{{ app['company'] }}</td>
+                            <td>{{ app['location'] }}</td>
+                            <td>
+                                <span class="badge bg-{{ 'warning' if app['status'] == 'pending' else 'success' if app['status'] == 'accepted' else 'danger' }}">
+                                    {{ app['status'] }}
+                                </span>
+                            </td>
+                            <td>{{ app['applied_at'][:10] }}</td>
+                            <td>
+                                {% if app['status'] == 'pending' %}
+                                <a href="{{ url_for('withdraw_application', app_id=app['id']) }}" class="btn btn-sm btn-outline-danger">Withdraw</a>
+                                {% endif %}
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            <a href="#" class="btn btn-outline-primary">View All Applications</a>
+            {% else %}
+            <div class="alert alert-info">
+                You haven't applied to any jobs yet. <a href="{{ url_for('browse_jobs') }}">Browse jobs</a> to get started.
+            </div>
+            {% endif %}
+        </div>
+    </div>
+    
+    <div class="card shadow-sm">
+        <div class="card-header bg-white">
+            <h5 class="mb-0">Recommended Jobs</h5>
+        </div>
+        <div class="card-body">
+            <div class="row">
+                {% for job in jobs %}
+                <div class="col-md-6 mb-3">
+                    <div class="card h-100">
+                        <div class="card-body">
+                            <h5 class="card-title">{{ job['title'] }}</h5>
+                            <h6 class="card-subtitle mb-2 text-muted">{{ job['company'] }}</h6>
+                            <p class="card-text small">{{ job['description'][:150] }}...</p>
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="text-muted">{{ job['location'] }}</span>
+                                <a href="{{ url_for('apply_job', job_id=job['id']) }}" class="btn btn-sm btn-primary">Apply Now</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+            <a href="{{ url_for('browse_jobs') }}" class="btn btn-outline-primary mt-3">Browse All Jobs</a>
+        </div>
+    </div>
+</div>
+{% endblock %} 
